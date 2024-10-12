@@ -1,0 +1,18 @@
+---
+- name: directory playbook
+  hosts: all
+  tasks:
+    - name: creatingg a directory
+      file:
+        path: ~/dir1
+        state: directory
+    - name: creatingg a file
+      file:
+        path: ~/dir1/apfile
+        state: touch
+    - name: adding lines in apfile
+      blockinfile:
+        path: ~/dir1/apfile
+        block: |
+          this is line 1
+          this is line 2
