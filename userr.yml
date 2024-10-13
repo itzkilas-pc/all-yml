@@ -1,0 +1,13 @@
+---
+- name: user playbook
+  hosts: all
+  tasks:
+    - name: adding user
+      user:
+        name: Max
+        state: present
+        password: "$1$IN0iwpA7$VJvgPIFEY9AbBTzBF6fnl."
+    - name: adding a group
+      group:
+        name: Max-grp
+        state: present
