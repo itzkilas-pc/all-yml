@@ -1,0 +1,21 @@
+---
+- name: directory playbook
+  hosts: all
+  tasks:
+    - name: creatingg a directory
+      file:
+        path: ~/dir1
+        state: directory
+    - name: creatingg a file
+      file:
+        path: ~/dir1/apfile
+        state: touch
+    - name: adding lines in apfile
+      lineinfile:
+        path: ~/dir1/apfile
+        line: "this is line 1"
+    - name: copying file to /tmp
+      copy:
+        src: ~/dir1/apfile
+        dest: /tmp/cpapfile
+        remote_src: yes
