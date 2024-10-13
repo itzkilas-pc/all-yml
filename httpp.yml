@@ -1,0 +1,19 @@
+---
+- name: web server
+  hosts: all
+  tasks:
+      - name: installing httpd package
+        yum:
+          name: httpd
+          state: latest
+      - name: startingg service
+        service:
+          name: httpd
+          state: started
+          enabled: yes
+      - name: adding ports in firewall
+        firewalld:
+          service: http
+          permanent: yes
+          state: enabled
+          immediate: yes
