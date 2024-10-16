@@ -1,0 +1,54 @@
+---
+- name: Creatingg NFS server for vm104
+  hosts: all
+  tasks:
+    - name: installing nfs-utils
+      yum:
+        name: nfs-utils
+        state: latest
+    - name: start and enable nfs server
+      service:
+        name: nfs-server
+        state: started
+        enabled: yes
+    - name: add firewall /tcp port
+      firewalld:
+        port: 2049/tcp
+        permanent: true
+        state: enabled
+        immediate: yes
+    - name: add firewall /udp port
+      firewalld:
+        port: 2049/udp
+        permanent: true
+        state: enabled
+        immediate: yes
+    - name: add firewall /tcp port for rpc-bind
+      firewalld:
+        port: 111/tcp
+        permanent: true
+        state: enabled
+        immediate: yes
+    - name: add firewall /udp port for rpc-bind
+      firewalld:
+        port: 111/udp
+        permanent: true
+        state: enabled
+        immediate: yes
+    - name: adding service mountd
+      firewalld:
+        service: mountd
+        permanent: true
+        state: enabled
+        immediate: yes
+    - name: creatingg a new directory for nfs share
+      file:
+        path: /nfsshare
+        state: directory
+    - name: adding line in exports file
+      lineinfile:
+        path: /etc/exports
+        line: "/nfsshare 192.168.1.105(rw,sync,no_root_squash)"
+    - name: exporting /nfsshare directory to vm105
+      shell:
+        cmd: exportfs -a
