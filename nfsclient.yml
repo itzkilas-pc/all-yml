@@ -1,0 +1,18 @@
+---
+- name: Running NFS Client playbook
+  hosts: all
+  tasks:
+    - name: installing nfs-utils
+      yum:
+        name: nfs-utils
+        state: latest
+    - name: make a directory for nfs sharing
+      file:
+        path: /nfs5104
+        state: directory
+    - name: mounting /nfs5104
+      mount:
+        path: /nfs5104
+        src: 192.168.1.104:/nfsshare
+        fstype: nfs
+        state: mounted
