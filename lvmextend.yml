@@ -1,0 +1,23 @@
+---
+- name: extending /dmz2024
+  hosts: all
+  tasks:
+    - name: extending vg
+      lvg:
+        vg: vg1
+        pvs: /dev/sdb,/dev/sdc
+      tags: tag1
+    
+    - name: extending lv
+      lvol: 
+        vg: vg1
+        lv: lv1
+        size: +100%FREE
+      tags: tag2
+
+    - name: resizing
+      filesystem:
+        fstype: xfs
+        dev: /dev/vg1/lv1
+        resizefs: yes
+      tags: tag3
