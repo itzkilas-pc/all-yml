@@ -1,0 +1,36 @@
+---
+- name: logical volume
+  hosts: all
+  tasks:
+    - name: pv-create
+      lvg:
+        vg: vg1
+        pvs: /dev/sdb
+      tags: tag1
+
+    - name: lv-create
+      lvol:
+        vg: vg1
+        lv: lv1
+        size: 100%FREE
+      tags: tag2
+
+    - name: creatingg a file system
+      filesystem: 
+        dev: /dev/vg1/lv1
+        fstype: xfs       
+      tags: tag3 
+
+    - name: creatingg a directory
+      file:
+              path: /dmz2024
+              state: directory
+      tags: tag4
+
+    - name: mounting /dmz2024
+      mount: 
+        path: /dmz2024
+        src: /dev/vg1/lv1
+        fstype: xfs
+        state: mounted
+      tags: tag5
